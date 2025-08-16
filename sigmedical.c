@@ -21,6 +21,7 @@ void pausar_tela(void);
 // interface
 void renderizar_tela(const char* titulo_tela, const char* opcoes);
 
+
 // p/ módulo de consultas
 void navegar_modulo_consulta(void);
 char tela_menu_consulta(void);
@@ -61,3 +62,26 @@ int main() {
 
     return 0;
 }
+
+// complementar
+
+void limpar_tela(void) {
+    printf("Pressione ENTER para continuar...\n");
+    getchar();
+}
+
+void renderizar_tela(const char* titulo_tela, const char* opcoes) {
+    limpar_tela();
+
+    printf("========================================\n");
+    printf(" %s\n", titulo_tela);
+    printf("========================================\n");
+
+    if (opcoes != NULL) {
+        printf("%s\n", opcoes);
+    }
+
+    printf("========================================\n");
+    printf("Escolha uma opção: ");
+}
+
