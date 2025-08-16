@@ -125,5 +125,35 @@ return opcao;
 
 }
 
+void tela_cadastrar_consulta(void) {
+    if (total_consultas >= MAX_CONSULTAS) {
+        printf("Limite máximo de consultas! Por favor, esvazie um horário.\n");
+        pausar_tela();
+        return;
+    }
 
+    renderizar_tela("Cadastrar consulta", NULL);
 
+    struct Consulta nova; 
+    printf("Nome do paciente:");
+    fgets(nova.paciente, sizeof(nova.paciente), stdin);
+    nova.paciente[strcspn(nova.paciente, "\n")] = '\0';
+
+    printf("Nome do médico:");
+    fgets(nova.medico, sizeof(nova.medico), stdin);
+    nova.medico[strcspn(nova.medico, "\n")] = '\0';
+
+    printf("Data (dia/mês/ano): ");
+    fgets(nova.data, sizeof(nova.data), stdin);
+    nova.data[strcspn(nova.data, "\n")] = '\0';
+
+    printf("Horário (hora:minuto): ");
+    fgets(nova.horario, sizeof(nova.horario), stdin);
+    nova.horario[strcspn(nova.horario, "\n")] = '0';
+
+    consultas[total_consultas++] = nova;
+
+    printf("Consulta cadastrada com sucesso!\n");
+    pausar_tela();
+
+}
