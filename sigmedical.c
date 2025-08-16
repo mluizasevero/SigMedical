@@ -85,3 +85,28 @@ void renderizar_tela(const char* titulo_tela, const char* opcoes) {
     printf("Escolha uma opção: ");
 }
 
+// modulo de consultas
+
+void navegar_modulo_consulta(void) {
+    char opcao;
+    do {
+        opcao = tela_menu_consulta();
+        switch (opcao) {
+        case '1':
+            tela_cadastrar_consulta();
+            break;
+        case '2':
+            tela_pesquisar_consulta();
+            break;
+        case '0':
+            printf("Retornando ao menu principal...\n");
+            pausar_tela(); 
+            break;
+        default:
+            printf("Opção inválida\n");
+            pausar_tela();
+
+        }
+    } while (opcao != '0');
+}
+
