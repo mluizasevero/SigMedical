@@ -110,3 +110,20 @@ void navegar_modulo_consulta(void) {
     } while (opcao != '0');
 }
 
+char tela_menu_consulta(void) {
+    renderizar_tela(
+        "Menu de consultas",
+        "1 - Cadastrar consulta\n"
+        "2 - Buscar consulta\n"
+        "0 - Voltar"
+    );
+
+char opcao;
+scanf(" %c", &opcao);
+getchar(); 
+return opcao;
+
+}
+
+
+
