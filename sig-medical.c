@@ -3,14 +3,22 @@
 #include <string.h>
 
 #define MAX_CONSULTAS 100
+#define MAX_ESTOQUE 50
 
-// informações
+// estrutura p/ consultas médicas
 struct Consulta {
     char paciente[50];
     char medico[50];
     char data[11];   // dia/mês/ano     
     char horario[6]; // hora:minuto
 };
+
+// estrutura p/ itens do estoque
+struct Estoque {
+    char nome[50];
+    int quantidade;
+};
+
 
 struct Consulta consultas[MAX_CONSULTAS]; // armazenar consultas
 int total_consultas = 0; // total de consultas cadastradas
@@ -19,6 +27,7 @@ void limpar_tela(void);
 void pausar_tela(void);
 
 // interface
+void desenhar_cabecalho_base(void);
 void renderizar_tela(const char* titulo_tela, const char* opcoes);
 
 
@@ -27,6 +36,12 @@ void navegar_modulo_consulta(void);
 char tela_menu_consulta(void);
 void tela_cadastrar_consulta(void);
 void tela_pesquisar_consulta(void);
+
+// p/ módulo de estoque
+void navegar_modulo_estoque(void);
+char tela_menu_estoque(void);
+void tela_cadastrar_estoque(void);
+void tela_pesquisar_estoque(void);
 
 // p/ tela principal
 char tela_menu_principal(void);
@@ -66,23 +81,43 @@ int main() {
 // complementar
 
 void limpar_tela(void) {
-    printf("Pressione ENTER para continuar...\n");
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
+
+void pausar_tela(void) {
+    printf("\n\t\t\t>>> Pressione <ENTER> para continuar...\n");
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
     getchar();
+}
+
+void desenhar_cabecalho_base(void) {
+    printf("///////////////////////////////////////////////////////////////////////////////\n");
+    printf("///                                                                         ///\n");
+    printf("///             Universidade Federal do Rio Grande do Norte (UFRN)          ///\n");
+    printf("///               Centro de Ensino Superior do Serido (CERES)               ///\n");
+    printf("///                 Disciplina DCT1106 -- Programacao                       ///\n");
+    printf("///                                                                         ///\n");
+    printf("///            Projeto sig-medical : Sistema de Gestao de Clinica          ///\n");
+    printf("///                                                                         ///\n");
+    printf("///////////////////////////////////////////////////////////////////////////////\n");
 }
 
 void renderizar_tela(const char* titulo_tela, const char* opcoes) {
     limpar_tela();
-
-    printf("========================================\n");
-    printf(" %s\n", titulo_tela);
-    printf("========================================\n");
-
-    if (opcoes != NULL) {
-        printf("%s\n", opcoes);
+    desenhar_cabecalho_base();
+    printf("///                                                                         ///\n");
+    printf("/// :: %-66s :: ///\n", titulo_tela);
+    printf("///                                                                         ///\n");
+    if (opcoes) {
+        printf("%s", opcoes);
+        printf("///                                                                         ///\n");
+        printf("///               Escolha a sua opcao: ");
     }
-
-    printf("========================================\n");
-    printf("Escolha uma opção: ");
 }
 
 // modulo de consultas
@@ -111,17 +146,15 @@ void navegar_modulo_consulta(void) {
 }
 
 char tela_menu_consulta(void) {
-    renderizar_tela(
-        "Menu de consultas",
-        "1 - Cadastrar consulta\n"
-        "2 - Buscar consulta\n"
-        "0 - Voltar"
-    );
-
-char opcao;
-scanf(" %c", &opcao);
-getchar(); 
-return opcao;
+    char op;
+    const char* opcoes =
+        "1. Cadastrar nova consulta.\n"
+        "2. Pesquisar consulta.\n"
+        "0. Voltar ao menu principal.\n";
+    renderizar_tela("Modulo de Consultas", opcoes);
+    scanf(" %c", &op);
+    getchar();
+    return op;
 
 }
 
@@ -152,8 +185,94 @@ void tela_cadastrar_consulta(void) {
     nova.horario[strcspn(nova.horario, "\n")] = '0';
 
     consultas[total_consultas++] = nova;
-
+    
     printf("Consulta cadastrada com sucesso!\n");
     pausar_tela();
 
 }
+
+void tela_pesquisar_consulta(void) {
+    renderizar_tela("Pesquisar Consulta", NULL);
+    char busca[50];
+    int encontrou = 0;
+
+    printf("\n\tDigite o nome do paciente ou medico para buscar: ");
+    fgets(busca, sizeof(busca), stdin);
+    busca[strcspn(busca, "\n")] = '\0';
+
+    for (int i = 0; i < total_consultas; i++) {
+        if (strstr(consultas[i].paciente, busca) != NULL || strstr(consultas[i].medico, busca) != NULL) {
+            printf("\n--- Consulta Encontrada ---\n");
+            printf("\tPaciente: %s\n", consultas[i].paciente);
+            printf("\tMedico: %s\n", consultas[i].medico);
+            printf("\tData: %s\n", consultas[i].data);
+            printf("\tHorario: %s\n", consultas[i].horario);
+            encontrou = 1;
+        }
+    }
+
+    if (!encontrou) {
+        printf("\n\tNenhuma consulta encontrada com esse nome.\n");
+    }
+
+    pausar_tela();
+}
+
+// módulo de estoque 
+
+void navegar_modulo_estoque(void) {
+    char opcao;
+    do {
+        opcao = tela_menu_estoque();
+        switch (opcao) {
+            case '1':
+                tela_cadastrar_estoque();
+                break;
+            case '2':
+                tela_pesquisar_estoque();
+                break;
+            case '0':
+                break;
+            default:
+                printf("\n\tOpção inválida! Tente novamente.\n");
+                pausar_tela();
+                break;
+        }
+    } while (opcao != '0');
+}
+
+char tela_menu_estoque(void) {
+    char op;
+    const char* opcoes =
+        "1. Cadastrar novo item no estoque.\n"
+        "2. Pesquisar item no estoque.\n"
+        "0. Voltar ao menu principal.\n";
+    renderizar_tela("Modulo de Estoque", opcoes);
+    scanf(" %c", &op);
+    getchar();
+    return op;
+}
+
+void tela_cadastrar_estoque(void) {
+    if (total_estoque >= MAX_ESTOQUE) {
+        printf("\n\tLimite maximo de itens no estoque atingido!\n");
+        pausar_tela();
+        return;
+    }
+
+    renderizar_tela("Cadastrar Item no Estoque", NULL);
+    struct Estoque novo;
+
+    printf("\n\tNome do item: ");
+    fgets(novo.nome, sizeof(novo.nome), stdin);
+    novo.nome[strcspn(novo.nome, "\n")] = '\0';
+
+    printf("\tQuantidade: ");
+    scanf("%d", &novo.quantidade);
+    getchar();
+
+    estoque[total_estoque++] = novo;
+    printf("\n\tItem cadastrado com sucesso!\n");
+    pausar_tela();
+}
+
