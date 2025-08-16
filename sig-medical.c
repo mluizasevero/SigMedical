@@ -19,6 +19,8 @@ struct Estoque {
     int quantidade;
 };
 
+struct Estoque estoque[MAX_ESTOQUE];
+int total_estoque = 0;
 
 struct Consulta consultas[MAX_CONSULTAS]; // armazenar consultas
 int total_consultas = 0; // total de consultas cadastradas
@@ -99,8 +101,8 @@ void desenhar_cabecalho_base(void) {
     printf("///////////////////////////////////////////////////////////////////////////////\n");
     printf("///                                                                         ///\n");
     printf("///             Universidade Federal do Rio Grande do Norte (UFRN)          ///\n");
-    printf("///               Centro de Ensino Superior do Serido (CERES)               ///\n");
-    printf("///                 Disciplina DCT1106 -- Programacao                       ///\n");
+    printf("///               Centro de Ensino Superior do Seridó (CERES)               ///\n");
+    printf("///                 Disciplina DCT1106 -- Programação                      ///\n");
     printf("///                                                                         ///\n");
     printf("///            Projeto sig-medical : Sistema de Gestao de Clinica          ///\n");
     printf("///                                                                         ///\n");
@@ -276,3 +278,65 @@ void tela_cadastrar_estoque(void) {
     pausar_tela();
 }
 
+void tela_pesquisar_estoque(void) {
+    renderizar_tela("Pesquisar Item no Estoque", NULL);
+    char busca[50];
+    int encontrou = 0;
+
+    printf("\n\tDigite o nome do item para buscar: ");
+    fgets(busca, sizeof(busca), stdin);
+    busca[strcspn(busca, "\n")] = '\0';
+
+    for (int i = 0; i < total_estoque; i++) {
+        if (strstr(estoque[i].nome, busca) != NULL) {
+            printf("\n--- Item Encontrado ---\n");
+            printf("\tNome: %s\n", estoque[i].nome);
+            printf("\tQuantidade: %d\n", estoque[i].quantidade);
+            encontrou = 1;
+        }
+    }
+    
+    if (!encontrou) {
+        printf("\n\tNenhum item encontrado com esse nome.\n");
+    }
+
+    pausar_tela();
+}
+
+// módulo de menu
+
+char tela_menu_principal(void) {
+    char op;
+    const char* opcoes =
+        "1. Modulo de Consultas\n"
+        "2. Modulo de Estoque\n"
+        "                              \n"
+        "                              \n"
+        "9. Equipe de Desenvolvimento\n"
+        "0. Sair\n";
+
+    renderizar_tela("Menu Principal", opcoes);
+    scanf(" %c", &op);
+    getchar();
+    return op;
+}
+
+void tela_sobre(void) {
+    const char* info =
+        "Este programa eh um sistema de gestao para clinicas medicas.\n"
+        "Foi desenvolvido como projeto da disciplina de Programação.";
+    renderizar_tela("Sobre o Projeto", NULL);
+    printf("%s\n", info);
+    printf("//////////////////////////////////////////////////////////////\n");
+    pausar_tela();
+}
+
+void tela_equipe(void) {
+    const char* info =
+        "///      Desenvolvido por:                                                 ///\n"
+        "///      Maria Luíza Severo Lima                                                ///\n"
+        "///      maria.severo.063@ufrn.edu.br                                                       ///";
+    printf("%s\n", info);
+    printf("///////////////////////////////////////////////////////////////////////////////\n");
+    pausar_tela();
+}
