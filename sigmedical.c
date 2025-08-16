@@ -46,7 +46,7 @@ int main() {
             tela_sobre(); 
             break;
         case '3':
-            tela_equipe():
+            tela_equipe();
             break; 
         case '0':
             printf("Encerrando programa...\n");
