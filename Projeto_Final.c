@@ -1,6 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void TelaMenuPrincipal() {
+    system("cls");
+    printf("----------------------------------------\n");
+    printf("///           MENU PRINCIPAL         ///\n");
+    printf("----------------------------------------\n");
+    printf("///                                    ///\n");
+    printf("///     1. Módulo Clientes             ///\n");
+    printf("///     2. Módulo Funcionários         ///\n");
+    printf("///     3. Módulo Consultas            ///\n");
+    printf("///     4. Módulo Estoque              ///\n");
+    printf("///     0. Sair                        ///\n");
+    printf("///                                    ///\n");
+    printf("----------------------------------------\n");
+    printf(">>> Escolha a opção desejada: ");
+}
+
 void TelaMenuFuncionarios() {
     system("cls");
     printf("----------------------------------------\n");
@@ -321,23 +337,9 @@ void TelaGerarRelatoriosEstoque() {
     printf(">>> Escolha a opção desejada: ");
 }
 
-void TelaMenuPrincipal() {
-    system("cls");
-    printf("----------------------------------------\n");
-    printf("///           MENU PRINCIPAL         ///\n");
-    printf("----------------------------------------\n");
-    printf("///                                    ///\n");
-    printf("///     1. Módulo Clientes             ///\n");
-    printf("///     2. Módulo Funcionários         ///\n");
-    printf("///     3. Módulo Consultas            ///\n");
-    printf("///     4. Módulo Estoque              ///\n");
-    printf("///     0. Sair                        ///\n");
-    printf("///                                    ///\n");
-    printf("----------------------------------------\n");
-    printf(">>> Escolha a opção desejada: ");
-}
-
 int main() {
     TelaMenuPrincipal();
     return 0;
 }
+
+// tentativa de commit
