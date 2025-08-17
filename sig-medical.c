@@ -334,9 +334,9 @@ void tela_sobre(void) {
 void tela_equipe(void) {
     const char* info =
         "///      Desenvolvido por:                                                 ///\n"
-        "///      Maria Luíza Severo Lima                                                ///\n"
-        "///      maria.severo.063@ufrn.edu.br                                                       ///";
+        "///      Maria Luíza Severo Lima                                           ///\n"
+        "///      maria.severo.063@ufrn.edu.br                                      ///";
     printf("%s\n", info);
-    printf("///////////////////////////////////////////////////////////////////////////////\n");
+    printf("///////////////////////////////////////////////////////////////////////////\n");
     pausar_tela();
 }
